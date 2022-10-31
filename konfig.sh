@@ -113,6 +113,14 @@ doInstalls() {
 sysConfig() {
         source ../.konfigrc
         sshSetup
+        # TODO: Generalize the ~/.ssh/config file to use a variable rather
+        # than hardcoding the username.
+        echo "SSH has been configured.  Please see ~/.ssh/config and /etc/ssh/sshd_config "
+        echo "for more information.  Original SSH settings can be recovered from ./backups."
+        echo ""
+        
+        
+        # makeDatasheet
 }
 
 makeDatasheet() {

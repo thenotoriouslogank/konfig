@@ -1,7 +1,11 @@
 # This is the configuration file for Konfigure.  
 
+uname=logank
+packageDir=$PWD
+sourcesDir=${PWD}/sources
+
 # The following applications will be automatically installed via apt-install.
-applications=("htop" "zsh" "net-tools" "cmatrix" "nmon" "screen" "gpg" "neofetch" "wget" "curl" "openssh-server" "git" "python3" "python3-pip")
+applications=("htop" "zsh" "net-tools" "cmatrix" "nmon" "screen" "gpg" "neofetch" "wget" "curl" "openssh-server" "git" "python3" "python3-pip" "lshw")
 
 # The following functions will install additional, optional software.
 vscode() {
@@ -47,7 +51,6 @@ sshdConfig() {
 }
 
 sshNew() {
-    uname=logank
     sshDir=/home/$uname/.ssh
     sshFile=${sshDir}/config
     sudo cp sources/ssh_config ${sshFile}
