@@ -125,7 +125,3 @@ main() {
 }
 
 main
-
-# TODO: Generate system info datasheet
-# TODO: Configure SSH, screen, plex, whatever else
-# TODO: Create basic I/O menus?

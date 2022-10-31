@@ -3,7 +3,7 @@
 uname=logank
 
 # The following applications will be automatically installed via apt-install.
-applications=("htop" "zsh" "net-tools" "cmatrix" "nmon" "screen" "gpg" "neofetech" "wget" "curl" "openssh-server")
+applications=("htop" "zsh" "net-tools" "cmatrix" "nmon" "screen" "gpg" "neofetch" "wget" "curl" "openssh-server" "git")
 
 # The following functions will install additional, optional software.
 vscode() {
