@@ -1,0 +1,81 @@
+# This is the configuration file for Konfigure.  
+
+uname=logank
+
+# The following applications will be automatically installed via apt-install.
+applications=("htop" "zsh" "net-tools" "cmatrix" "nmon" "screen" "gpg" "neofetch" "wget" "curl" "openssh-server" "git")
+
+# The following functions will install additional, optional software.
+vscode() {
+    sudo -u $uname apt update
+    sudo -u $uname apt install software-properties-common apt-transport-https wget
+    wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | sudo -u $uname apt-key add -
+    sudo -u $uname add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
+    sudo -u $uname apt install code
+    sudo -u $uname apt update
+    sudo -u $uname apt upgrade
+}
+
+gh() {
+    type -p curl >/dev/null || apt install curl -y
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo -u $uname dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
+    && chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo -u $uname tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+    sudo -u $uname apt update \
+    && sudo -u $uname apt install gh -y
+}
+
+sshdNew() {
+    cd ..
+    sudo cp sources/sshd_config /etc/ssh/sshd_config
+}
+
+sshdBak() {
+    sudo cp $sshdFile $sshdFile.bak
+    sudo mv $sshdFile.bak ./
+    sudo rm -rf $sshdFile
+    sshdNew
+}
+
+sshdConfig() {
+    sshdFile=/etc/ssh/sshd_config
+    if [[ -f "$sshdFile" ]]; then
+        echo "$sshdFile exists - backing up."
+        sshdBak
+    else
+        echo "$sshdFile does not exist - creating it."
+        sshdNew
+    fi
+}
+
+sshNew() {
+    sshDir=/home/$uname/.ssh
+    sshFile=${sshDir}/config
+    sudo cp sources/ssh_config ${sshFile}
+}
+
+sshBak() {
+    sshDir=/home/$uname/.ssh
+    sshFile=${sshDir}/config
+    cd backups
+    sudo cp ${sshFile} ${sshFile}.bak
+    sudo mv ${sshFile}.bak ./
+    sudo rm -rf ${sshFile}
+    cd ..
+    sshNew
+}
+
+sshConfig() {
+    if [[ -f "/home/logank/.ssh/config" ]]; then
+        echo "${sshFile} exists - backing up."
+        sshBak
+    else
+        echo "${sshFile} does not exist - creating it."
+        sshNew
+    fi
+}
+
+sshSetup() {
+    sshdConfig
+    sshConfig
+}
