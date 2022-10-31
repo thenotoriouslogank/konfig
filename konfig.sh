@@ -38,7 +38,6 @@ prepare() {
         echo ""
         echo "If this is a newly-installed system, this may take a few minutes."
         echo ""
-        uname=$USER
         mkdir backups
         cd backups
         apt update && apt upgrade -y && doInstalls
@@ -46,7 +45,7 @@ prepare() {
 
 doInstalls() {
         echo ""
-        apt install "${applications[@]}"
+        apt install "${applications[@]}" -y
         echo ""
         echo "Installation(s) complete.  Some files have been"
         echo "automatically removed via apt autoremove."
