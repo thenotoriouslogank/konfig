@@ -34,6 +34,8 @@ prepare() {
     echo ""
     echo "If this is a newly-installed system, this may take a few minutes."
     echo ""
+    mkdir backups
+    cd backups
     apt update && apt upgrade -y && doInstalls
 }
 
@@ -97,6 +99,7 @@ sysConfig() {
     echo ""
     echo "Setting up SSH config files..."
     echo ""
+    sshdConfig
     echo "Setting up .zshrc..."
     echo ""
     echo "Setting up screen..."
@@ -105,11 +108,12 @@ sysConfig() {
 }
 
 makeDatasheet() {
-    PASS
+    return 1
 }
 
 main() {
     verify
+    #sysConfig
 }
 
 main

@@ -42,7 +42,7 @@ sshdBak() {
 }
 
 sshdNew() {
-    sudo cp sources/sshd_config /etc/ssh/newfile
+    sudo mv sshd_config /etc/ssh/newfile
 }
 
 sshNew() {
