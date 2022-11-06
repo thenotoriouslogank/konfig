@@ -5,7 +5,7 @@ packageDir=$PWD
 sourcesDir=${PWD}/sources
 
 # The following applications will be automatically installed via apt-install.
-applications=("htop" "zsh" "net-tools" "cmatrix" "nmon" "screen" "gpg" "neofetch" "wget" "curl" "openssh-server" "git" "python3" "python3-pip" "lshw")
+applications=("htop" "zsh" "net-tools" "cmatrix" "nmon" "screen" "gpg" "neofetch" "wget" "curl" "openssh-server" "git" "python3" "python3-pip" "lshw" "xorg" "xinit" "compton" "nitrogen" "awesome")
 
 # The following functions will install additional, optional software.
 vscode() {
@@ -40,25 +40,31 @@ sshdBak() {
 }
 
 sshdConfig() {
-    sshdFile=/etc/ssh/sshd_config
-    if [[ -f "$sshdFile" ]]; then
-        echo "$sshdFile exists - backing up."
+    local sshdFile=/etc/ssh/sshd_config
+    if [[ -f "${sshdFile}" ]]; then
+        echo "${sshdFile} exists - backing up."
         sshdBak
     else
-        echo "$sshdFile does not exist - creating it."
+        echo "${sshdFile} does not exist - creating it."
         sshdNew
     fi
 }
 
 sshNew() {
-    sshDir=/home/$uname/.ssh
-    sshFile=${sshDir}/config
+    local sshDir=/home/${uname}/.ssh
+    local sshFile=${sshDir}/config
+    if [[ ${sshDir} ]]; then
+        echo "${sshDir} already exists."
+    else
+        echo "${sshDir} does not exist; creating it."
+        mkdir sshDir
+    fi
     sudo cp sources/ssh_config ${sshFile}
 }
 
 sshBak() {
-    sshDir=/home/$uname/.ssh
-    sshFile=${sshDir}/config
+    local sshDir=/home/${uname}/.ssh
+    local sshFile=${sshDir}/config
     cd backups
     sudo cp ${sshFile} ${sshFile}.bak
     sudo mv ${sshFile}.bak ./
@@ -68,11 +74,13 @@ sshBak() {
 }
 
 sshConfig() {
-    if [[ -f "/home/logank/.ssh/config" ]]; then
-        echo "${sshFile} exists - backing up."
+    local sshDir=/home/${uname}/.ssh
+    local sshFile=${sshDir}/config
+    if [[ -e "/home/logank/.ssh/config" ]]; then
+        echo "$sshFile exists - backing up."
         sshBak
     else
-        echo "${sshFile} does not exist - creating it."
+        echo "$sshFile does not exist - creating it."
         sshNew
     fi
 }
